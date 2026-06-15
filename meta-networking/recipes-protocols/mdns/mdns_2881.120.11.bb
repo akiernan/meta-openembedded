@@ -16,6 +16,7 @@ SRC_URI = "git://github.com/apple-oss-distributions/mDNSResponder;protocol=https
            file://mdns.service \
            file://0007-mDNSShared-Make-Apple-Wireless-Direct-Link-depend-on.patch \
            file://0001-mDNSPosix-Rework-mbedtls-for-compatibility-with-mbed.patch \
+           file://0001-Initialize-fd_set-in-mDNSPlatformTCPWritable.patch \
            "
 BRANCH = "rel/mDNSResponder-2881"
 SRCREV = "641cdf73ef46e1824895cbc44ad8ac7647da2479"

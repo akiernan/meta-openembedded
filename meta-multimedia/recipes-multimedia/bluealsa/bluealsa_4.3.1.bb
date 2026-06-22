@@ -38,7 +38,7 @@ PACKAGECONFIG[mpg123] = "--enable-mpg123,--disable-mpg123,mpg123,mpg123"
 PACKAGECONFIG[msbc] = "--enable-msbc,--disable-msbc,spandsp"
 PACKAGECONFIG[ofono] = "--enable-ofono,--disable-ofono,ofono"
 PACKAGECONFIG[payloadcheck] = "--enable-payloadcheck,--disable-payloadcheck"
-PACKAGECONFIG[rfcomm] = "--enable-rfcomm,--disable-rfcomm"
+PACKAGECONFIG[rfcomm] = "--enable-rfcomm,--disable-rfcomm,readline"
 PACKAGECONFIG[systemd] = "--enable-systemd --with-systemdsystemunitdir=${systemd_system_unitdir} \
                           --with-systemdbluealsaargs='${SYSTEMD_BLUEALSA_ARGS}' --with-systemdbluealsaaplayargs='${SYSTEMD_BLUEALSA_APLAY_ARGS}',--disable-systemd,systemd"
 PACKAGECONFIG[test] = "--enable-test,--disable-test,libcheck libsndfile1"

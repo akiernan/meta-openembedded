@@ -198,6 +198,7 @@ RDEPENDS:packagegroup-meta-oe-core:remove:riscv64 = "safec"
 RDEPENDS:packagegroup-meta-oe-core:remove:riscv32 = "safec"
 
 RDEPENDS:packagegroup-meta-oe-crypto = "\
+    agec \
     botan \
     cryptsetup \
     fsverity-utils \

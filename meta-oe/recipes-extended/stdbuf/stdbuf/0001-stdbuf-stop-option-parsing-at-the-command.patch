@@ -1,0 +1,29 @@
+From a49fd0b8e092d84f262c3d343fe24a7c7cbbffb2 Mon Sep 17 00:00:00 2001
+From: Alex Kiernan <alex.kiernan@gmail.com>
+Date: Tue, 6 Oct 2026 17:38:29 +0100
+Subject: [PATCH] stdbuf: stop option parsing at the command
+
+glibc's getopt permutes argv, so the wrapped command's own options are
+taken as stdbuf's: "stdbuf -oL grep -e foo" sets stderr's buffering to
+"foo". A leading '+' stops at the first operand, as FreeBSD's getopt
+always does.
+
+Upstream-Status: Inappropriate [glibc-specific]
+Signed-off-by: Alex Kiernan <alex.kiernan@gmail.com>
+---
+ usr-stdbuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/usr-stdbuf.c b/usr-stdbuf.c
+index 6b09bb6149f5..22cf67672280 100644
+--- a/usr-stdbuf.c
++++ b/usr-stdbuf.c
+@@ -69,7 +69,7 @@ main(int argc, char *argv[])
+ 	int i;
+ 
+ 	ibuf = obuf = ebuf = NULL;
+-	while ((i = getopt(argc, argv, "e:i:o:")) != -1) {
++	while ((i = getopt(argc, argv, "+e:i:o:")) != -1) {
+ 		switch (i) {
+ 		case 'e':
+ 			ebuf = optarg;

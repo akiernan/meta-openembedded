@@ -413,6 +413,7 @@ RDEPENDS:packagegroup-meta-oe-extended = "\
     smartmontools \
     s-nail \
     snappy \
+    stdbuf \
     tipcutils \
     tiptop \
     tmate \

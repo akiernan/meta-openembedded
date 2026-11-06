@@ -4,11 +4,9 @@
 
 cd /sys/kernel/config/usb_gadget
 
-cd adb
+cd adb || exit 0
 
 echo -n "" > UDC || true
-
-killall adbd || true
 
 umount /dev/usb-ffs/adb
 

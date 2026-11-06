@@ -67,6 +67,7 @@ SRC_URI = "https://deb.debian.org/debian/pool/main/a/android-platform-tools/andr
            file://0020-adbd-signal-readiness-once-functionfs-is-serviced.patch \
            file://0021-liblog-optionally-read-ro.debuggable-from-build.prop.patch \
            file://0022-adbd-optionally-require-authorization-unless-the-bui.patch \
+           file://0023-libadbd_auth-optionally-take-the-trusted-key-paths-a.patch \
            "
 
 SRC_URI[orig.md5sum] = "352376965cdef7bd7505d8fefdd43d50"
@@ -223,7 +224,8 @@ do_compile() {
     for tool in ${TOOLS_TO_BUILD}; do
         oe_runmake -f ${S}/debian/system/${tool}.mk -C ${S} \
             ${@'HAVE_SYSTEMD=1' if bb.utils.contains('PACKAGECONFIG', 'systemd', True, False, d) else ''} \
-            ${@'ADBD_AUTH_UNLESS_DEBUGGABLE=1' if bb.utils.contains('PACKAGECONFIG', 'auth-unless-debuggable', True, False, d) else ''}
+            ${@'ADBD_AUTH_UNLESS_DEBUGGABLE=1' if bb.utils.contains('PACKAGECONFIG', 'auth-unless-debuggable', True, False, d) else ''} \
+            ${@'ADBD_AUTH_KEY_PATHS=' + d.getVar('ADBD_AUTH_KEY_PATHS') if d.getVar('ADBD_AUTH_KEY_PATHS') else ''}
     done
 }
 
@@ -271,6 +273,9 @@ BBCLASSEXTEND = "native"
 
 PACKAGECONFIG ??= "${@bb.utils.filter('DISTRO_FEATURES', 'systemd', d)}"
 ADB_DEBUGGABLE_PROP_FILES ?= "${sysconfdir}/build.prop"
+# Where adbd reads trusted host keys, colon-separated. Empty keeps Android's
+# /adb_keys and /data/misc/adb/adb_keys.
+ADBD_AUTH_KEY_PATHS ?= ""
 # Apply Android's fs_config ownership/mode tables to files pushed by adbd to
 # /system, /vendor and /oem. Off by default: the tables describe Android
 # partition images and are meaningless on a generic Linux rootfs.

@@ -61,6 +61,7 @@ SRC_URI = "https://deb.debian.org/debian/pool/main/a/android-platform-tools/andr
            file://0014-daemon-auth-vendor-a-portable-b64_pton-for-non-glib.patch \
            file://0015-adbd-make-fs-config-opt-in-on-non-android-builds.patch \
            file://0016-adbd-forward-the-reboot-target-to-RESTART2.patch \
+           file://0017-adbd-shell-start-in-HOME-and-drop-the-Android-only-T.patch \
            "
 
 SRC_URI[orig.md5sum] = "352376965cdef7bd7505d8fefdd43d50"

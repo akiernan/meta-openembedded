@@ -66,6 +66,7 @@ SRC_URI = "https://deb.debian.org/debian/pool/main/a/android-platform-tools/andr
            file://0019-adb-daemon-exit-after-adb-root-unroot-so-an-init-sup.patch \
            file://0020-adbd-signal-readiness-once-functionfs-is-serviced.patch \
            file://0021-liblog-optionally-read-ro.debuggable-from-build.prop.patch \
+           file://0022-adbd-optionally-require-authorization-unless-the-bui.patch \
            "
 
 SRC_URI[orig.md5sum] = "352376965cdef7bd7505d8fefdd43d50"
@@ -221,7 +222,8 @@ do_compile() {
 
     for tool in ${TOOLS_TO_BUILD}; do
         oe_runmake -f ${S}/debian/system/${tool}.mk -C ${S} \
-            ${@'HAVE_SYSTEMD=1' if bb.utils.contains('PACKAGECONFIG', 'systemd', True, False, d) else ''}
+            ${@'HAVE_SYSTEMD=1' if bb.utils.contains('PACKAGECONFIG', 'systemd', True, False, d) else ''} \
+            ${@'ADBD_AUTH_UNLESS_DEBUGGABLE=1' if bb.utils.contains('PACKAGECONFIG', 'auth-unless-debuggable', True, False, d) else ''}
     done
 }
 
@@ -277,4 +279,8 @@ PACKAGECONFIG[fs-config] = ""
 # build.prop format), so `adb root` is refused unless one of them sets
 # ro.debuggable=1. Off by default: every build is debuggable.
 PACKAGECONFIG[debuggable-prop] = ""
+# Require hosts to authenticate unless the build is debuggable, decided per
+# connection. Off by default, as in Debian: no host is asked for a key. Only
+# meaningful with debuggable-prop, without which every build is debuggable.
+PACKAGECONFIG[auth-unless-debuggable] = ""
 PACKAGECONFIG[systemd] = ",,systemd"

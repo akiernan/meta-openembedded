@@ -65,6 +65,7 @@ SRC_URI = "https://deb.debian.org/debian/pool/main/a/android-platform-tools/andr
            file://0018-adbd-do-not-use-pthread_kill-as-a-thread-liveness-pr.patch \
            file://0019-adb-daemon-exit-after-adb-root-unroot-so-an-init-sup.patch \
            file://0020-adbd-signal-readiness-once-functionfs-is-serviced.patch \
+           file://0021-liblog-optionally-read-ro.debuggable-from-build.prop.patch \
            "
 
 SRC_URI[orig.md5sum] = "352376965cdef7bd7505d8fefdd43d50"
@@ -208,7 +209,8 @@ do_compile() {
     # Debian replaces Android's Soong build system with hand-written GNU make
     # fragments under debian/system/ and debian/external/.
     for tool in ${PREREQUISITE_core}; do
-        oe_runmake -f ${S}/debian/system/${tool}.mk -C ${S}
+        oe_runmake -f ${S}/debian/system/${tool}.mk -C ${S} \
+            ${@'LIBLOG_DEBUGGABLE_PROP_FILES=' + d.getVar('ADB_DEBUGGABLE_PROP_FILES') if bb.utils.contains('PACKAGECONFIG', 'debuggable-prop', True, False, d) else ''}
     done
 
     if echo " ${TOOLS_TO_BUILD} " | grep -q " fastboot "; then
@@ -266,8 +268,13 @@ FILES:${PN}-adbd = " \
 BBCLASSEXTEND = "native"
 
 PACKAGECONFIG ??= "${@bb.utils.filter('DISTRO_FEATURES', 'systemd', d)}"
+ADB_DEBUGGABLE_PROP_FILES ?= "${sysconfdir}/build.prop"
 # Apply Android's fs_config ownership/mode tables to files pushed by adbd to
 # /system, /vendor and /oem. Off by default: the tables describe Android
 # partition images and are meaningless on a generic Linux rootfs.
 PACKAGECONFIG[fs-config] = ""
+# Read ro.debuggable from ADB_DEBUGGABLE_PROP_FILES (colon-separated,
+# build.prop format), so `adb root` is refused unless one of them sets
+# ro.debuggable=1. Off by default: every build is debuggable.
+PACKAGECONFIG[debuggable-prop] = ""
 PACKAGECONFIG[systemd] = ",,systemd"

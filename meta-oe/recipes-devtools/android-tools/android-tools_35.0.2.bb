@@ -64,6 +64,7 @@ SRC_URI = "https://deb.debian.org/debian/pool/main/a/android-platform-tools/andr
            file://0017-adbd-shell-start-in-HOME-and-drop-the-Android-only-T.patch \
            file://0018-adbd-do-not-use-pthread_kill-as-a-thread-liveness-pr.patch \
            file://0019-adb-daemon-exit-after-adb-root-unroot-so-an-init-sup.patch \
+           file://0020-adbd-signal-readiness-once-functionfs-is-serviced.patch \
            "
 
 SRC_URI[orig.md5sum] = "352376965cdef7bd7505d8fefdd43d50"

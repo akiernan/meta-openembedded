@@ -5,7 +5,7 @@ Before=android-system.service
 
 [Service]
 Type=notify
-Restart=on-failure
+Restart=always
 ExecStartPre=-/usr/bin/android-gadget-setup adb
 ExecStart=/usr/bin/adbd
 

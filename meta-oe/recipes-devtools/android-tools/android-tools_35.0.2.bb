@@ -68,6 +68,7 @@ SRC_URI = "https://deb.debian.org/debian/pool/main/a/android-platform-tools/andr
            file://0021-liblog-optionally-read-ro.debuggable-from-build.prop.patch \
            file://0022-adbd-optionally-require-authorization-unless-the-bui.patch \
            file://0023-libadbd_auth-optionally-take-the-trusted-key-paths-a.patch \
+           file://0024-adbd-keep-root-on-Linux-only-while-the-build-is-debu.patch \
            "
 
 SRC_URI[orig.md5sum] = "352376965cdef7bd7505d8fefdd43d50"
